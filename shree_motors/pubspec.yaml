@@ -31,7 +31,7 @@ dependencies:
   url_launcher: ^6.2.2
   
   # UI Components
-  carousel_slider: ^4.2.1
+  flutter_carousel_widget: ^2.2.0  # Changed from carousel_slider
   smooth_page_indicator: ^1.1.0
   flutter_svg: ^2.0.9
   
@@ -52,9 +52,4 @@ flutter:
   assets:
     - assets/images/logo/
     - assets/images/home/
-    - assets/images/vehicles/
     - assets/images/about/
-    - assets/images/blogs/
-    - assets/images/compare_models/
-    - assets/images/contact/
-    - assets/images/support/

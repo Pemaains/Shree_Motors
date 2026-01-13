@@ -1,9 +1,7 @@
 // lib/widgets/common/footer.dart
 import 'package:flutter/material.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/text_styles.dart';
-import '../../core/constants/app_constants.dart';
 import '../../core/utils/responsive.dart';
 
 class Footer extends StatelessWidget {
@@ -56,43 +54,35 @@ class Footer extends StatelessWidget {
     );
   }
 
+  // lib/widgets/common/footer.dart - Update _buildCompanyInfo method
+  // lib/widgets/common/footer.dart - Update _buildCompanyInfo method
   Widget _buildCompanyInfo() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Row(
           children: [
-            Container(
-              padding: const EdgeInsets.all(8),
-              decoration: const BoxDecoration(
-                color: AppColors.primary,
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(
-                Icons.electric_car,
-                color: AppColors.white,
-                size: 24,
-              ),
+            // Logo Image
+            Image.asset(
+              'assets/images/logo/shree_motors_logo.png',
+              height: 150,
+              width: 150,
+              errorBuilder: (context, error, stackTrace) {
+                return Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: const BoxDecoration(
+                    color: AppColors.primary,
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.electric_car,
+                    color: AppColors.white,
+                    size: 24,
+                  ),
+                );
+              },
             ),
             const SizedBox(width: 12),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'SHREE MOTORS',
-                  style: AppTextStyles.h5.copyWith(
-                    color: AppColors.white,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                Text(
-                  'Pvt. Ltd.',
-                  style: AppTextStyles.caption.copyWith(
-                    color: Colors.white70,
-                  ),
-                ),
-              ],
-            ),
           ],
         ),
         const SizedBox(height: 20),

@@ -73,7 +73,7 @@ class CustomAppBar extends StatelessWidget {
                       const SizedBox(width: 16),
                       _buildSocialIcon(Icons.facebook),
                       _buildSocialIcon(Icons.close), // Twitter/X
-                      _buildSocialIcon(Icons.add_box), // Google+
+                      _buildSocialIcon(Icons.g_mobiledata), // Google+
                       _buildSocialIcon(Icons.business), // LinkedIn
                     ],
                   ),
@@ -89,40 +89,34 @@ class CustomAppBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // Logo
-                Row(
-                  children: [
-                    Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        color: AppColors.primary.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(8),
+                // Logo with Image
+                InkWell(
+                  onTap: () => context.go(AppRoutes.home),
+                  child: Row(
+                    children: [
+                      // Logo Image
+                      Image.asset(
+                        'assets/images/logo/shree_motors_logo.png',
+                        height: 150,
+                        width: 150,
+                        errorBuilder: (context, error, stackTrace) {
+                          return Container(
+                            height: 100,
+                            width: 100,
+                            decoration: BoxDecoration(
+                              color: AppColors.primary.withValues(alpha: 0.1),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: const Icon(
+                              Icons.electric_car,
+                              color: AppColors.primary,
+                              size: 30,
+                            ),
+                          );
+                        },
                       ),
-                      child: const Icon(
-                        Icons.electric_car,
-                        color: AppColors.primary,
-                        size: 30,
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppConstants.companyName.toUpperCase(),
-                          style: AppTextStyles.h5.copyWith(
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 1.5,
-                          ),
-                        ),
-                        Text(
-                          'Pvt. Ltd.',
-                          style: AppTextStyles.caption,
-                        ),
-                      ],
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
 
                 const Spacer(),
@@ -131,7 +125,7 @@ class CustomAppBar extends StatelessWidget {
                 if (Responsive.isDesktop(context))
                   Row(
                     children: [
-                      _buildNavItem(context, 'Home', AppRoutes.home, true),
+                      _buildNavItem(context, 'Home', AppRoutes.home),
                       _buildNavItem(context, 'Vehicles', AppRoutes.vehicles),
                       _buildNavItem(
                           context, 'Compare Models', AppRoutes.compare),
@@ -145,7 +139,7 @@ class CustomAppBar extends StatelessWidget {
                   IconButton(
                     icon: const Icon(Icons.menu),
                     onPressed: () {
-                      // TODO: Implement mobile menu
+                      _showMobileMenu(context);
                     },
                   ),
 
@@ -154,7 +148,7 @@ class CustomAppBar extends StatelessWidget {
                 // CTA Button
                 ElevatedButton(
                   onPressed: () {
-                    // TODO: Implement schedule visit
+                    context.go(AppRoutes.contact);
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primary,
@@ -180,10 +174,9 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildNavItem(BuildContext context, String title, String route,
-      [bool isActive = false]) {
+  Widget _buildNavItem(BuildContext context, String title, String route) {
     final currentRoute = GoRouterState.of(context).uri.toString();
-    final active = currentRoute == route || isActive;
+    final active = currentRoute == route;
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -223,6 +216,38 @@ class CustomAppBar extends StatelessWidget {
         ),
         child: Icon(icon, size: 14, color: AppColors.mediumGray),
       ),
+    );
+  }
+
+  void _showMobileMenu(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      builder: (context) => Container(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            _buildMobileMenuItem(context, 'Home', AppRoutes.home),
+            _buildMobileMenuItem(context, 'Vehicles', AppRoutes.vehicles),
+            _buildMobileMenuItem(context, 'Compare Models', AppRoutes.compare),
+            _buildMobileMenuItem(context, 'Support', AppRoutes.support),
+            _buildMobileMenuItem(context, 'About Us', AppRoutes.about),
+            _buildMobileMenuItem(context, 'Contact Us', AppRoutes.contact),
+            _buildMobileMenuItem(context, 'Blogs', AppRoutes.blogs),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildMobileMenuItem(
+      BuildContext context, String title, String route) {
+    return ListTile(
+      title: Text(title),
+      onTap: () {
+        Navigator.pop(context);
+        context.go(route);
+      },
     );
   }
 }

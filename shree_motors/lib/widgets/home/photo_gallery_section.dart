@@ -29,9 +29,9 @@ class PhotoGallerySection extends StatelessWidget {
             alignment: WrapAlignment.center,
             children: [
               _buildFilterButton('ALL', true),
-              _buildFilterButton('KAMA EV EW1', false),
-              _buildFilterButton('KAMA EV EW2', false),
-              _buildFilterButton('EV VAN', false),
+              _buildFilterButton('KAMA EV EW1', true),
+              _buildFilterButton('KAMA EV EW2', true),
+              _buildFilterButton('EV VAN', true),
             ],
           ),
           const SizedBox(height: 40),

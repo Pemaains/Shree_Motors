@@ -1,6 +1,5 @@
 // lib/widgets/home/hero_section.dart
 import 'package:flutter/material.dart';
-import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/text_styles.dart';
@@ -15,13 +14,45 @@ class HeroSection extends StatefulWidget {
 }
 
 class _HeroSectionState extends State<HeroSection> {
-  int _currentSlide = 0;
+  final PageController _pageController = PageController(viewportFraction: 0.8);
+  int _currentPage = 0;
 
   final List<String> _vehicleImages = [
-    'assets/images/home/vehicle1.png',
-    'assets/images/home/vehicle2.png',
-    'assets/images/home/vehicle3.png',
+    'assets/images/home/vehicle_blue_showroom.png',
+    'assets/images/home/hero_vehicles.png',
+    'assets/images/home/vehicle_ew1_white.png',
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    // Auto-play
+    Future.delayed(const Duration(seconds: 2), () {
+      if (mounted) {
+        _autoPlay();
+      }
+    });
+  }
+
+  void _autoPlay() {
+    Future.delayed(const Duration(seconds: 4), () {
+      if (mounted && _pageController.hasClients) {
+        final nextPage = (_currentPage + 1) % _vehicleImages.length;
+        _pageController.animateToPage(
+          nextPage,
+          duration: const Duration(milliseconds: 400),
+          curve: Curves.easeInOut,
+        );
+        _autoPlay();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _pageController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +61,8 @@ class _HeroSectionState extends State<HeroSection> {
 
     return Container(
       height: screenHeight * 0.85,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: AppColors.heroGradient,
-        image: const DecorationImage(
-          image: AssetImage('assets/images/home/hero_bg.jpg'),
-          fit: BoxFit.cover,
-          opacity: 0.3,
-        ),
       ),
       child: Stack(
         children: [
@@ -61,9 +87,7 @@ class _HeroSectionState extends State<HeroSection> {
                 children: [
                   Text(
                     'Our mission ',
-                    style: AppTextStyles.h5.copyWith(
-                      fontSize: 20,
-                    ),
+                    style: AppTextStyles.h5.copyWith(fontSize: 20),
                   ),
                   Container(
                     padding:
@@ -100,7 +124,6 @@ class _HeroSectionState extends State<HeroSection> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Vehicle Info Card
                       Container(
                         padding: const EdgeInsets.all(40),
                         decoration: BoxDecoration(
@@ -127,9 +150,7 @@ class _HeroSectionState extends State<HeroSection> {
                                 .animate()
                                 .fadeIn(duration: 800.ms)
                                 .slideY(begin: 0.3, end: 0),
-
                             const SizedBox(height: 16),
-
                             Text(
                               'Available now at Shree Motors, Kathmandu, Nepal',
                               style: AppTextStyles.bodyLarge.copyWith(
@@ -139,35 +160,23 @@ class _HeroSectionState extends State<HeroSection> {
                                 .animate()
                                 .fadeIn(duration: 800.ms, delay: 200.ms)
                                 .slideY(begin: 0.2, end: 0),
-
                             const SizedBox(height: 32),
-
-                            // Stats Row
                             Row(
                               children: [
                                 _buildStatItem(
-                                  '${AppConstants.kmRange}+',
-                                  'KM Range',
-                                ),
+                                    '${AppConstants.kmRange}+', 'KM Range'),
                                 const SizedBox(width: 40),
                                 _buildStatItem(
-                                  '${AppConstants.modelCount}',
-                                  'Models',
-                                ),
+                                    '${AppConstants.modelCount}', 'Models'),
                                 const SizedBox(width: 40),
                                 _buildStatItem(
-                                  '${AppConstants.colorCount}',
-                                  'Colors',
-                                ),
+                                    '${AppConstants.colorCount}', 'Colors'),
                               ],
                             )
                                 .animate()
                                 .fadeIn(duration: 800.ms, delay: 400.ms)
                                 .slideY(begin: 0.2, end: 0),
-
                             const SizedBox(height: 40),
-
-                            // Price and CTA
                             Row(
                               children: [
                                 Text(
@@ -192,9 +201,8 @@ class _HeroSectionState extends State<HeroSection> {
                                   ),
                                   child: Text(
                                     'BOOK NOW!',
-                                    style: AppTextStyles.button.copyWith(
-                                      fontSize: 18,
-                                    ),
+                                    style: AppTextStyles.button
+                                        .copyWith(fontSize: 18),
                                   ),
                                 ),
                               ],
@@ -209,32 +217,64 @@ class _HeroSectionState extends State<HeroSection> {
                   ),
                 ),
 
-                // Right Side - Vehicle Carousel
+                // Right Side - Vehicle Carousel (Custom PageView)
                 if (isDesktop)
                   Expanded(
                     flex: 3,
-                    child: CarouselSlider(
-                      options: CarouselOptions(
-                        height: 500,
-                        autoPlay: true,
-                        autoPlayInterval: const Duration(seconds: 4),
-                        enlargeCenterPage: true,
-                        viewportFraction: 0.8,
-                        onPageChanged: (index, reason) {
+                    child: SizedBox(
+                      height: 500,
+                      child: PageView.builder(
+                        controller: _pageController,
+                        onPageChanged: (index) {
                           setState(() {
-                            _currentSlide = index;
+                            _currentPage = index;
                           });
                         },
+                        itemCount: _vehicleImages.length,
+                        itemBuilder: (context, index) {
+                          return AnimatedBuilder(
+                            animation: _pageController,
+                            builder: (context, child) {
+                              double value = 1.0;
+                              if (_pageController.position.haveDimensions) {
+                                value = _pageController.page! - index;
+                                value =
+                                    (1 - (value.abs() * 0.3)).clamp(0.0, 1.0);
+                              }
+                              return Center(
+                                child: SizedBox(
+                                  height:
+                                      Curves.easeInOut.transform(value) * 500,
+                                  child: child,
+                                ),
+                              );
+                            },
+                            child: Container(
+                              margin:
+                                  const EdgeInsets.symmetric(horizontal: 10),
+                              child: Image.asset(
+                                _vehicleImages[index],
+                                fit: BoxFit.contain,
+                                errorBuilder: (context, error, stackTrace) {
+                                  return Container(
+                                    decoration: BoxDecoration(
+                                      color: AppColors.lightGray,
+                                      borderRadius: BorderRadius.circular(12),
+                                    ),
+                                    child: const Center(
+                                      child: Icon(
+                                        Icons.directions_car,
+                                        size: 100,
+                                        color: AppColors.mediumGray,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          );
+                        },
                       ),
-                      items: _vehicleImages.map((imagePath) {
-                        return Container(
-                          margin: const EdgeInsets.symmetric(horizontal: 10),
-                          child: Image.asset(
-                            imagePath,
-                            fit: BoxFit.contain,
-                          ),
-                        );
-                      }).toList(),
                     )
                         .animate()
                         .fadeIn(duration: 1000.ms, delay: 400.ms)
@@ -244,33 +284,30 @@ class _HeroSectionState extends State<HeroSection> {
             ),
           ),
 
-          // Navigation Arrows
-          if (isDesktop) ...[
+          // Page Indicators
+          if (isDesktop)
             Positioned(
-              left: 20,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: IconButton(
-                  icon: const Icon(Icons.chevron_left, size: 48),
-                  color: AppColors.white,
-                  onPressed: () {},
+              bottom: 40,
+              left: 0,
+              right: 0,
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: List.generate(
+                  _vehicleImages.length,
+                  (index) => Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 4),
+                    width: _currentPage == index ? 24 : 8,
+                    height: 8,
+                    decoration: BoxDecoration(
+                      color: _currentPage == index
+                          ? AppColors.primary
+                          : AppColors.white.withValues(alpha: 0.5),
+                      borderRadius: BorderRadius.circular(4),
+                    ),
+                  ),
                 ),
               ),
             ),
-            Positioned(
-              right: 20,
-              top: 0,
-              bottom: 0,
-              child: Center(
-                child: IconButton(
-                  icon: const Icon(Icons.chevron_right, size: 48),
-                  color: AppColors.white,
-                  onPressed: () {},
-                ),
-              ),
-            ),
-          ],
         ],
       ),
     );

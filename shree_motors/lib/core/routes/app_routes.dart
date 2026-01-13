@@ -1,12 +1,12 @@
 // lib/core/routes/app_routes.dart
 import 'package:go_router/go_router.dart';
-import '../screens/home/home_screen.dart';
-import '../screens/vehicles/vehicles_screen.dart';
-import '../screens/compare/compare_screen.dart';
-import '../screens/support/support_screen.dart';
-import '../screens/about/about_screen.dart';
-import '../screens/contact/contact_screen.dart';
-import '../screens/blogs/blogs_screen.dart';
+import '../../screens/home/home_screen.dart';
+import '../../screens/vehicles/vehicles_screen.dart';
+import '../../screens/compare/compare_screen.dart';
+import '../../screens/support/support_screen.dart';
+import '../../screens/about/about_screen.dart';
+import '../../screens/contact/contact_screen.dart';
+import '../../screens/blogs/blogs_screen.dart';
 
 class AppRoutes {
   static const String home = '/';
