@@ -6,6 +6,7 @@ import '../../core/constants/text_styles.dart';
 import '../../core/constants/app_constants.dart';
 import '../../core/utils/responsive.dart';
 import '../../core/routes/app_routes.dart';
+import '../../core/utils/image_helper.dart';
 
 class CustomAppBar extends StatelessWidget {
   const CustomAppBar({super.key});
@@ -81,7 +82,7 @@ class CustomAppBar extends StatelessWidget {
               ),
             ),
 
-          // Main Navigation Bar
+          // Main Navigation Bar - FIXED LAYOUT
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: Responsive.padding(context),
@@ -89,20 +90,19 @@ class CustomAppBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // Logo with Image
+                // Logo with Image - FIXED
                 InkWell(
                   onTap: () => context.go(AppRoutes.home),
                   child: Row(
                     children: [
-                      // Logo Image
                       Image.asset(
-                        'assets/images/logo/shree_motors_logo.png',
+                        ImageAssets.logo,
                         height: 150,
                         width: 150,
                         errorBuilder: (context, error, stackTrace) {
                           return Container(
-                            height: 100,
-                            width: 100,
+                            height: 50,
+                            width: 50,
                             decoration: BoxDecoration(
                               color: AppColors.primary.withValues(alpha: 0.1),
                               borderRadius: BorderRadius.circular(8),
@@ -115,6 +115,7 @@ class CustomAppBar extends StatelessWidget {
                           );
                         },
                       ),
+                      const SizedBox(width: 12),
                     ],
                   ),
                 ),
@@ -161,7 +162,7 @@ class CustomAppBar extends StatelessWidget {
                       borderRadius: BorderRadius.circular(4),
                     ),
                   ),
-                  child: Text(
+                  child: const Text(
                     'SCHEDULE VISIT',
                     style: AppTextStyles.button,
                   ),

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/text_styles.dart';
 import '../../core/utils/responsive.dart';
+import '../../core/utils/image_helper.dart';
 
 class Footer extends StatelessWidget {
   const Footer({super.key});
@@ -64,7 +65,7 @@ class Footer extends StatelessWidget {
           children: [
             // Logo Image
             Image.asset(
-              'assets/images/logo/shree_motors_logo.png',
+              ImageAssets.logo, // Use ImageAssets
               height: 150,
               width: 150,
               errorBuilder: (context, error, stackTrace) {
@@ -82,6 +83,7 @@ class Footer extends StatelessWidget {
                 );
               },
             ),
+
             const SizedBox(width: 12),
           ],
         ),

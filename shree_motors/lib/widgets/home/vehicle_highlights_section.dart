@@ -1,4 +1,4 @@
-// lib/widgets/home/vehicle_highlights_section.dart
+//lib/widgets/home/vehicle_highlights_section.dart
 import 'package:flutter/material.dart';
 import '../../core/constants/colors.dart';
 import '../../core/constants/text_styles.dart';

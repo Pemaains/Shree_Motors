@@ -107,10 +107,10 @@ class _VehicleSpecsSectionState extends State<VehicleSpecsSection> {
     return Container(
       height: 400,
       decoration: BoxDecoration(
-        gradient: LinearGradient(
+        gradient: const LinearGradient(
           colors: [
-            const Color(0xFF001f3f),
-            const Color(0xFF003366),
+            Color(0xFF001f3f),
+            Color(0xFF003366),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
