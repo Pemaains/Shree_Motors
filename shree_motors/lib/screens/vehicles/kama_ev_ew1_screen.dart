@@ -39,11 +39,11 @@ class KamaEvEw1Screen extends StatelessWidget {
     return Container(
       width: double.infinity,
       height: isMobile ? 400 : 600,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         gradient: LinearGradient(
           colors: [
-            AppColors.darkGray,
-            AppColors.mediumGray.withValues(alpha: 0.8),
+            Color(0xFF1a1a1a),
+            Color(0xFF2d2d2d),
           ],
           begin: Alignment.topCenter,
           end: Alignment.bottomCenter,
@@ -51,52 +51,106 @@ class KamaEvEw1Screen extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // Hero Image
+          // Clean Background Image (no blur)
           Positioned.fill(
-            child: Image.asset(
-              ImageAssets.kamaElectric,
-              fit: BoxFit.cover,
-              errorBuilder: (context, error, stackTrace) {
-                return Container(
-                  color: AppColors.lightGray.withValues(alpha: 0.3),
-                  child: const Center(
-                    child: Icon(
-                      Icons.electric_car,
-                      size: 100,
-                      color: AppColors.primary,
+            child: Opacity(
+              opacity: 0.3, // Subtle background
+              child: Image.asset(
+                ImageAssets.kamaElectric,
+                fit: BoxFit.cover,
+                errorBuilder: (context, error, stackTrace) {
+                  return Container(
+                    color: AppColors.darkGray,
+                    child: const Center(
+                      child: Icon(
+                        Icons.electric_car,
+                        size: 100,
+                        color: AppColors.primary,
+                      ),
                     ),
-                  ),
-                );
-              },
+                  );
+                },
+              ),
             ),
           ),
 
-          // Title Overlay
-          Positioned(
-            top: isMobile ? 80 : 150,
-            left: 0,
-            right: 0,
+          // Dark overlay for better text contrast
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Colors.black.withValues(alpha: 0.6),
+                    Colors.black.withValues(alpha: 0.4),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+          ),
+
+          // Clean Title with better visibility
+          Center(
             child: Container(
               padding: EdgeInsets.symmetric(
                 horizontal: Responsive.padding(context),
               ),
               child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text(
-                    'KAMA EV EW1 – THE FUTURE OF PICKUP IN',
-                    style: AppTextStyles.h1.copyWith(
-                      fontSize: isMobile ? 24 : 48,
-                      color: AppColors.white,
-                      fontWeight: FontWeight.bold,
+                  // Main Title
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 32,
+                      vertical: 16,
                     ),
-                    textAlign: TextAlign.center,
+                    decoration: BoxDecoration(
+                      color: AppColors.primary,
+                      borderRadius: BorderRadius.circular(8),
+                    ),
+                    child: Text(
+                      'KAMA EV EW1',
+                      style: AppTextStyles.h1.copyWith(
+                        fontSize: isMobile ? 32 : 56,
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                        letterSpacing: 2,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
                   ),
+                  const SizedBox(height: 24),
+                  // Subtitle
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 24,
+                      vertical: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: Colors.white.withValues(alpha: 0.95),
+                      borderRadius: BorderRadius.circular(6),
+                    ),
+                    child: Text(
+                      'THE FUTURE OF PICKUP IN NEPAL',
+                      style: AppTextStyles.h3.copyWith(
+                        fontSize: isMobile ? 18 : 28,
+                        color: AppColors.textPrimary,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1,
+                      ),
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                  const SizedBox(height: 16),
+                  // Company name
                   Text(
-                    'NEPAL - SHREE MOTORS NEPAL',
-                    style: AppTextStyles.h1.copyWith(
-                      fontSize: isMobile ? 24 : 48,
+                    'SHREE MOTORS NEPAL',
+                    style: AppTextStyles.bodyLarge.copyWith(
+                      fontSize: isMobile ? 14 : 18,
                       color: AppColors.white,
-                      fontWeight: FontWeight.bold,
+                      fontWeight: FontWeight.w500,
+                      letterSpacing: 1.5,
                     ),
                     textAlign: TextAlign.center,
                   ),
@@ -126,16 +180,19 @@ class KamaEvEw1Screen extends StatelessWidget {
               'Home',
               style: AppTextStyles.bodyMedium.copyWith(
                 color: AppColors.primary,
+                fontWeight: FontWeight.w500,
               ),
             ),
           ),
-          const SizedBox(width: 8),
-          const Text('/'),
-          const SizedBox(width: 8),
+          const Padding(
+            padding: EdgeInsets.symmetric(horizontal: 8),
+            child: Icon(Icons.chevron_right, size: 16),
+          ),
           Text(
-            'Kama EV EW1 - The Future of Pickup in Nepal',
+            'Kama EV EW1',
             style: AppTextStyles.bodyMedium.copyWith(
               color: AppColors.textSecondary,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ],
@@ -155,13 +212,14 @@ class KamaEvEw1Screen extends StatelessWidget {
       color: AppColors.white,
       child: Column(
         children: [
-          // Main Vehicle Image
+          // Main Vehicle Image - Clean and Sharp
           Container(
             constraints: BoxConstraints(
               maxHeight: isMobile ? 300 : 500,
               maxWidth: 1200,
             ),
             decoration: BoxDecoration(
+              color: AppColors.background,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -175,10 +233,11 @@ class KamaEvEw1Screen extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               child: Image.asset(
                 ImageAssets.heroVehicles,
-                fit: BoxFit.cover,
+                fit:
+                    BoxFit.contain, // Changed from cover to contain for clarity
                 errorBuilder: (context, error, stackTrace) {
                   return Container(
-                    color: AppColors.lightGray.withValues(alpha: 0.3),
+                    color: AppColors.background,
                     child: const Center(
                       child: Icon(
                         Icons.electric_car,
@@ -253,12 +312,13 @@ class KamaEvEw1Screen extends StatelessWidget {
         child: Stack(
           fit: StackFit.expand,
           children: [
+            // Sharp image without blur
             Image.asset(
               imagePath,
               fit: BoxFit.cover,
               errorBuilder: (context, error, stackTrace) {
                 return Container(
-                  color: AppColors.lightGray.withValues(alpha: 0.3),
+                  color: AppColors.background,
                   child: const Icon(
                     Icons.electric_car,
                     size: 60,
@@ -267,42 +327,62 @@ class KamaEvEw1Screen extends StatelessWidget {
                 );
               },
             ),
-            // Overlay
+            // Better gradient overlay for text visibility
             Container(
               decoration: BoxDecoration(
                 gradient: LinearGradient(
                   colors: [
                     Colors.transparent,
-                    Colors.black.withValues(alpha: 0.7),
+                    Colors.black.withValues(alpha: 0.85),
                   ],
-                  begin: Alignment.topCenter,
+                  begin: Alignment.center,
                   end: Alignment.bottomCenter,
                 ),
               ),
             ),
-            // Text
+            // Clean text with better contrast
             Positioned(
               bottom: 20,
               left: 20,
               right: 20,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: AppTextStyles.h4.copyWith(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.bold,
+              child: Container(
+                padding: const EdgeInsets.all(16),
+                decoration: BoxDecoration(
+                  color: Colors.black.withValues(alpha: 0.3),
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      title,
+                      style: AppTextStyles.h4.copyWith(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.bold,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withValues(alpha: 0.5),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    subtitle,
-                    style: AppTextStyles.bodyLarge.copyWith(
-                      color: AppColors.white,
+                    const SizedBox(height: 8),
+                    Text(
+                      subtitle,
+                      style: AppTextStyles.bodyLarge.copyWith(
+                        color: AppColors.white,
+                        fontWeight: FontWeight.w600,
+                        shadows: [
+                          Shadow(
+                            color: Colors.black.withValues(alpha: 0.5),
+                            blurRadius: 4,
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ],
@@ -327,6 +407,7 @@ class KamaEvEw1Screen extends StatelessWidget {
             'Book a FREE Test Drive Today',
             style: AppTextStyles.h2.copyWith(
               fontSize: isMobile ? 28 : 42,
+              color: AppColors.textPrimary,
             ),
             textAlign: TextAlign.center,
           ),
@@ -356,6 +437,7 @@ class KamaEvEw1Screen extends StatelessWidget {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(8),
               ),
+              elevation: 4,
             ),
             icon: const Icon(Icons.phone, size: 24),
             label: Text(
@@ -412,6 +494,7 @@ class KamaEvEw1Screen extends StatelessWidget {
           style: AppTextStyles.h5.copyWith(
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: 20),
@@ -449,6 +532,7 @@ class KamaEvEw1Screen extends StatelessWidget {
           style: AppTextStyles.h5.copyWith(
             fontSize: 18,
             fontWeight: FontWeight.bold,
+            color: AppColors.textPrimary,
           ),
         ),
         const SizedBox(height: 20),
@@ -462,14 +546,15 @@ class KamaEvEw1Screen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                'EV Preventive Maintenance: ...',
+                'EV Preventive Maintenance',
                 style: AppTextStyles.bodyMedium.copyWith(
                   fontWeight: FontWeight.w600,
+                  color: AppColors.textPrimary,
                 ),
               ),
               const SizedBox(height: 8),
               Text(
-                'Just like traditional fuel-powered trucks ...',
+                'Just like traditional fuel-powered trucks, EVs need regular maintenance...',
                 style: AppTextStyles.bodySmall.copyWith(
                   color: AppColors.textSecondary,
                 ),
