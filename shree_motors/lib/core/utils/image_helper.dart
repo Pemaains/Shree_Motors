@@ -23,10 +23,13 @@ class ImageAssets {
   static const String vehicleEw1White =
       'assets/images/home/vehicle_ew1_white.png';
 
+  // NEW: Kama Electric vehicles comparison image
+  static const String kamaElectric = 'assets/images/home/kama_electric.png';
+
   // About Images
   static const String mdPhoto = 'assets/images/about/md_sushant_chand.png';
 
-  // Vehicles
+  // Vehicles (if you have specific vehicle folder images)
   static const String kamaEw1Blue = 'assets/images/vehicles/ew1.png';
   static const String kamaEw1White =
       'assets/images/vehicles/kama_ew1_white.png';

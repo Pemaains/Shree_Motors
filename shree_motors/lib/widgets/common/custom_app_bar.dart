@@ -8,8 +8,15 @@ import '../../core/utils/responsive.dart';
 import '../../core/routes/app_routes.dart';
 import '../../core/utils/image_helper.dart';
 
-class CustomAppBar extends StatelessWidget {
+class CustomAppBar extends StatefulWidget {
   const CustomAppBar({super.key});
+
+  @override
+  State<CustomAppBar> createState() => _CustomAppBarState();
+}
+
+class _CustomAppBarState extends State<CustomAppBar> {
+  bool _isVehiclesHovered = false;
 
   @override
   Widget build(BuildContext context) {
@@ -82,7 +89,7 @@ class CustomAppBar extends StatelessWidget {
               ),
             ),
 
-          // Main Navigation Bar - FIXED LAYOUT
+          // Main Navigation Bar
           Container(
             padding: EdgeInsets.symmetric(
               horizontal: Responsive.padding(context),
@@ -90,7 +97,7 @@ class CustomAppBar extends StatelessWidget {
             ),
             child: Row(
               children: [
-                // Logo with Image - FIXED
+                // Logo
                 InkWell(
                   onTap: () => context.go(AppRoutes.home),
                   child: Row(
@@ -127,7 +134,7 @@ class CustomAppBar extends StatelessWidget {
                   Row(
                     children: [
                       _buildNavItem(context, 'Home', AppRoutes.home),
-                      _buildNavItem(context, 'Vehicles', AppRoutes.vehicles),
+                      _buildVehiclesDropdown(context),
                       _buildNavItem(
                           context, 'Compare Models', AppRoutes.compare),
                       _buildNavItem(context, 'Support', AppRoutes.support),
@@ -205,6 +212,99 @@ class CustomAppBar extends StatelessWidget {
     );
   }
 
+  // VEHICLES DROPDOWN
+  Widget _buildVehiclesDropdown(BuildContext context) {
+    final currentRoute = GoRouterState.of(context).uri.toString();
+    final active =
+        currentRoute.contains('/vehicles') || currentRoute.contains('/kama-ev');
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16),
+      child: MouseRegion(
+        onEnter: (_) => setState(() => _isVehiclesHovered = true),
+        onExit: (_) => setState(() => _isVehiclesHovered = false),
+        child: Column(
+          children: [
+            Container(
+              padding: const EdgeInsets.symmetric(vertical: 8),
+              decoration: BoxDecoration(
+                border: Border(
+                  bottom: BorderSide(
+                    color: active ? AppColors.primary : Colors.transparent,
+                    width: 2,
+                  ),
+                ),
+              ),
+              child: Text(
+                'Vehicles',
+                style: AppTextStyles.navLink.copyWith(
+                  color: active ? AppColors.primary : AppColors.textPrimary,
+                  fontWeight: active ? FontWeight.w600 : FontWeight.w500,
+                ),
+              ),
+            ),
+            if (_isVehiclesHovered)
+              Positioned(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 8),
+                  decoration: BoxDecoration(
+                    color: AppColors.darkGray,
+                    borderRadius: BorderRadius.circular(4),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(alpha: 0.15),
+                        blurRadius: 10,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      _buildDropdownItem(
+                        context,
+                        'Kama EV EW1',
+                        AppRoutes.kamaEvEw1,
+                      ),
+                      Container(
+                        height: 1,
+                        color: AppColors.mediumGray.withValues(alpha: 0.3),
+                      ),
+                      _buildDropdownItem(
+                        context,
+                        'Kama EV EW2',
+                        AppRoutes.kamaEvEw2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildDropdownItem(BuildContext context, String title, String route) {
+    return InkWell(
+      onTap: () {
+        setState(() => _isVehiclesHovered = false);
+        context.go(route);
+      },
+      child: Container(
+        width: 200,
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        child: Text(
+          title,
+          style: AppTextStyles.bodyMedium.copyWith(
+            color: AppColors.white,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+
   Widget _buildSocialIcon(IconData icon) {
     return Padding(
       padding: const EdgeInsets.only(left: 8),
@@ -229,7 +329,8 @@ class CustomAppBar extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             _buildMobileMenuItem(context, 'Home', AppRoutes.home),
-            _buildMobileMenuItem(context, 'Vehicles', AppRoutes.vehicles),
+            _buildMobileMenuItem(context, 'Kama EV EW1', AppRoutes.kamaEvEw1),
+            _buildMobileMenuItem(context, 'Kama EV EW2', AppRoutes.kamaEvEw2),
             _buildMobileMenuItem(context, 'Compare Models', AppRoutes.compare),
             _buildMobileMenuItem(context, 'Support', AppRoutes.support),
             _buildMobileMenuItem(context, 'About Us', AppRoutes.about),

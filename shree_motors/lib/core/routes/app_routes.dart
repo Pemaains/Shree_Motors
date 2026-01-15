@@ -2,6 +2,8 @@
 import 'package:go_router/go_router.dart';
 import '../../screens/home/home_screen.dart';
 import '../../screens/vehicles/vehicles_screen.dart';
+import '../../screens/vehicles/kama_ev_ew1_screen.dart';
+import '../../screens/vehicles/kama_ev_ew2_screen.dart';
 import '../../screens/compare/compare_screen.dart';
 import '../../screens/support/support_screen.dart';
 import '../../screens/about/about_screen.dart';
@@ -11,6 +13,8 @@ import '../../screens/blogs/blogs_screen.dart';
 class AppRoutes {
   static const String home = '/';
   static const String vehicles = '/vehicles';
+  static const String kamaEvEw1 = '/kama-ev-ew1';
+  static const String kamaEvEw2 = '/kama-ev-ew2';
   static const String compare = '/compare';
   static const String support = '/support';
   static const String about = '/about';
@@ -27,6 +31,14 @@ class AppRoutes {
       GoRoute(
         path: vehicles,
         builder: (context, state) => const VehiclesScreen(),
+      ),
+      GoRoute(
+        path: kamaEvEw1,
+        builder: (context, state) => const KamaEvEw1Screen(),
+      ),
+      GoRoute(
+        path: kamaEvEw2,
+        builder: (context, state) => const KamaEvEw2Screen(),
       ),
       GoRoute(
         path: compare,
